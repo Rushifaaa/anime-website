@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo|Carter+One|Damion|Fugaz+One|Marck+Script|Playball|Yellowtail&display=swap');
+/* 
+Carter One
+Damion Fugaz One
+Yellowtail
+Playball
+Baloo
+Marck Script
+*/
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.829);
+}
+body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
