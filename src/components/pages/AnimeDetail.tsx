@@ -89,7 +89,7 @@ const style = (theme: Theme) => createStyles( {
         width: '20%',
     },
     animeOptionalDetails: {
-        width: '100%',
+        width: '90%',
         display: 'flex',
         flexDirection: 'column',
     },
@@ -129,6 +129,50 @@ const style = (theme: Theme) => createStyles( {
         margin: '10px',
     },
     licensorTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        width: 'auto',
+        //display: 'inline-block',
+        textDecoration: 'underline',
+        fontStyle: 'oblique',
+        fontFamily: 'Baloo'
+    },
+    studiosTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        width: 'auto',
+        //display: 'inline-block',
+        textDecoration: 'underline',
+        fontStyle: 'oblique',
+        fontFamily: 'Baloo'
+    },
+    studioList: {
+        display: 'flex',
+        flexDirection: 'row',
+        margin: '10px'
+    },
+    studio: {
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '10px',
+    },
+    animeOpeningEnding: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '90%',
+        margin: '10px 0 10px 0',
+    },
+    openingList: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '50%',
+    },
+    endingList: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '50%',
+    },
+    themesTitle: {
         display: 'flex',
         alignItems: 'center',
         width: 'auto',
@@ -290,7 +334,7 @@ class AnimeDetail extends Component<Props, State> {
         if(!anime) {
             return <div>sssss</div>;
         }
-        if(!anime.genres || !anime.producers || !anime.licensors) {
+        if(!anime.genres || !anime.producers || !anime.licensors || !anime.studios || !anime.opening_themes || !anime.ending_themes) {
             return;
         }
         console.log(anime.mal_id)
@@ -346,14 +390,29 @@ class AnimeDetail extends Component<Props, State> {
                         </div>
 
                     </div>
-                    
 
                     <div className={this.props.classes.animeDescription}>
                         <p className={this.props.classes.contentGenresTitle}><strong>Description:</strong></p>
                         <p className={this.props.classes.contentText}>{anime.synopsis}</p>
                     </div>
 
+                    <div className={this.props.classes.animeOpeningEnding}>
+                            <div className={this.props.classes.openingList}>
+                                <p className={this.props.classes.themesTitle}>Opening Theme/s: </p>
+                                {anime.opening_themes.map((opening) => (
+                                    <p>{opening}</p>
+                                ))}
+                            </div>
+                            <div className={this.props.classes.endingList}>
+                                <p className={this.props.classes.themesTitle}>Ending Theme/s: </p>
+                                {anime.ending_themes.map((ending) => (
+                                    <p>{ending}</p>
+                                ))}
+                            </div>
+                    </div>
+                   
                     <div className={this.props.classes.animeOptionalDetails}>
+                        <hr />
                         <div className={this.props.classes.producerList}>
                             <p className={this.props.classes.producerTitle}>Producer: </p><br/>
                             {anime.producers.map((producer) => {
@@ -371,6 +430,15 @@ class AnimeDetail extends Component<Props, State> {
                             {anime.licensors.map((licensor) => (
                                 <div key={licensor.mal_id} className={this.props.classes.licensor}>
                                    <p>{licensor.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <hr />
+                        <div className={this.props.classes.studioList}>
+                            <p className={this.props.classes.licensorTitle}>Studio/s: </p>
+                            {anime.studios.map((studio) => (
+                                <div key={studio.mal_id} className={this.props.classes.studio}>
+                                    <p>{studio.name}</p>
                                 </div>
                             ))}
                         </div>
