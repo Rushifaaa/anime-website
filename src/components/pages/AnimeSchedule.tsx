@@ -1,10 +1,9 @@
 import { Theme } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
-import { animeModel } from '../../models/animeModel';
+import './../../index.css';
 import './../Keyframes.css';
 import AnimeMovie from './AnimeMovie';
-import './../../index.css';
 
 const style = (theme: Theme) => createStyles({
     mainDiv: {
@@ -40,29 +39,30 @@ const style = (theme: Theme) => createStyles({
 });
 
 export interface AnimeDetails {
-    mal_id: number,
-    title: string,
-    image_url: string,
-    synopsis: string,
-    type: string,
-    airing_start: string,
-    episodes: number,
+    mal_id: number;
+    title: string;
+    image_url: string;
+    synopsis: string;
+    type: string;
+    airing_start: string;
+    episodes: number;
     genres: [{
-        mal_id: number,
-        type: string,
-        name: string,
+        mal_id: number;
+        type: string;
+        name: string;
         url: string
-    }],
-    source: string,
+    }];
+    source: string;
     producers: [{
-        mal_id: number,
-        type: string,
-        name: string,
-        url: string,
-    }],
-    licensors: [string],
-    r18: boolean,
-    kids: boolean
+        mal_id: number;
+        type: string;
+        name: string;
+        url: string;
+    }];
+    licensors: [string];
+    r18: boolean;
+    kids: boolean;
+    continuing: string;
 }
 
 interface Props extends WithStyles<typeof style> {
@@ -70,17 +70,17 @@ interface Props extends WithStyles<typeof style> {
 }
 
 interface State {
-    inputValue: string,
-    monday: AnimeDetails[],
-    tuesday: AnimeDetails[],
-    wednesday: AnimeDetails[],
-    thursday: AnimeDetails[],
-    friday: AnimeDetails[],
-    saturday: AnimeDetails[],
-    sunday: AnimeDetails[],
-    unknown: AnimeDetails[],
-    other: AnimeDetails[],
-    animPlayState: string,
+    inputValue: string;
+    monday: AnimeDetails[];
+    tuesday: AnimeDetails[];
+    wednesday: AnimeDetails[];
+    thursday: AnimeDetails[];
+    friday: AnimeDetails[];
+    saturday: AnimeDetails[];
+    sunday: AnimeDetails[];
+    unknown: AnimeDetails[];
+    other: AnimeDetails[];
+    animPlayState: string;
 }
 
 

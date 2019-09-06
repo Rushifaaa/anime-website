@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { animeModel } from '../../models/animeModel';
-import { AnimeDetails } from './Anime';
+import { AnimeDetails } from './AnimeSchedule';
 
 const style = (theme: Theme) => createStyles({
     animeItemLink: {
@@ -80,7 +80,7 @@ class AnimeMovie extends Component<Props, State> {
         const anime = this.props.anime;
         return(
             <div className={this.props.classes.animeItems} key={anime.mal_id}>
-                <Link onClick={()=> {animeModel.currentSelectedAnime = anime;}} to={"/anime/details/" + anime.title}>
+                <Link onClick={()=> {animeModel.currentSelectedAnime = anime;}} to={"/anime/details/" + anime.mal_id}>
                     <div className={this.props.classes.animeContent}
                     onMouseOver={this.onAnimeItemHover}
                     onMouseLeave={this.onAnimeItemLeave}>
