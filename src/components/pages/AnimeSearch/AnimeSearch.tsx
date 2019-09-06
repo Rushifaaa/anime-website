@@ -1,13 +1,41 @@
-import { Button, Theme, Checkbox, FormControlLabel, FormGroup, Select, MenuItem } from '@material-ui/core';
+import { Button, FormControl, InputLabel, MenuItem, Select, Theme } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
 import React, { Component } from 'react';
-import { BetterCheckbox } from './AnimeSearchComponent';
-import { AnimeDetails } from '../AnimeSchedule';
 import AnimeMovie from '../AnimeMovie';
+import { AnimeDetails } from '../AnimeSchedule';
+import { genres } from '../../../models/Genres';
 
 const style = (theme: Theme) => createStyles({
+    root: {
+        color: 'white'
+    },
     mainDiv: {
         margin: '90px 0 0 0',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        maxWidth: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    formControl: {
+        minWidth: 120,
+        maxWidth: 150,
+        color: 'white',
+    },
+    multiSelect: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '10px',
+        color: 'white',
+    },
+    animeListStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        maxWidth: '90%',
+        flexWrap: 'wrap'
     }
 });
 
@@ -29,7 +57,7 @@ class AnimeSearch extends Component<Props, State> {
 
         this.state = {
             inputValue: "",
-            url: "https://api.jikan.moe/v3/search/",
+            url: "https://api.jikan.moe/v3/search/anime/?q=",
             action: false,
             animes: [],
             selectValue: []
@@ -83,39 +111,29 @@ class AnimeSearch extends Component<Props, State> {
 
         return (
             <div className={this.props.classes.mainDiv}>
-                <input type="text" value={this.state.inputValue} onChange={this.handleChange} />
-                <Button style={{ color: 'white' }} onClick={this.search}>Search</Button><br />
-                <Button style={{ color: 'white' }} onClick={() => this.setState({ url: 'https://api.jikan.moe/v3/search/anime/?q=' })}>Anime</Button><br />
-                <Button style={{ color: 'white' }} onClick={() => this.setState({ url: 'https://api.jikan.moe/v3/search/manga/?q=' })}>Manga</Button><br />
 
-                <Select
-                    multiple
-                    onChange={this.handleMultiSelectChange}
-                    value={this.state.selectValue}
-                >
-                    <MenuItem value={`&genre=1`}>Action</MenuItem>
-                    <MenuItem value={`&genre=2`}>Adventure</MenuItem>
-                    <MenuItem value={`&genre=3`}>Cars</MenuItem>
-                    <MenuItem value={`&genre=4`}>Comedy</MenuItem>
-                    <MenuItem value={`&genre=5`}>Dementia</MenuItem>
-                    <MenuItem value={`&genre=6`}>Demons</MenuItem>
-                    <MenuItem value={`&genre=7`}>Mystery</MenuItem>
-                    <MenuItem value={`&genre=8`}>Drama</MenuItem>
-                    <MenuItem value={`&genre=9`}>Ecchi</MenuItem>
-                    <MenuItem value={`&genre=10`}>Fantasy</MenuItem>
-                    <MenuItem value={`&genre=11`}>Game</MenuItem>
-                    <MenuItem value={`&genre=12`}>Hentai</MenuItem>
-                    <MenuItem value={`&genre=13`}>Historical</MenuItem>
-                    <MenuItem value={`&genre=14`}>Horror</MenuItem>
-                </Select>
+                <div className={this.props.classes.multiSelect}>
+                    <input type="text" value={this.state.inputValue} onChange={this.handleChange} />
+                    <Button style={{ color: 'white' }} onClick={this.search}>Search</Button><br />
+                    <div>
+                        <FormControl className={this.props.classes.formControl}>
+                            <InputLabel htmlFor="select-multiple-checkbox">Genre</InputLabel>
+                            <Select
+                                style={{ color: 'white' }}
+                                variant="filled"
+                                multiple
+                                onChange={this.handleMultiSelectChange}
+                                value={this.state.selectValue}
+                            >
+                                {Object.keys(genres).map((id) => (
+                                    <MenuItem key={id} value={`&genre=${id}`}>{genres[id]}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+                <div className={this.props.classes.animeListStyle}>{animeList}</div>
 
-                <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    maxWidth: '90%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>{animeList}</div>
             </div>
         );
     }
