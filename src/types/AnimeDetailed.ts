@@ -5,7 +5,7 @@ export interface DetailEntry {
     url: string;
 };
 
-interface DetailDate {
+export interface DetailDate {
     day: number | null;
     month: number | null;
     year: number | null;

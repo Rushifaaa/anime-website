@@ -11,6 +11,8 @@ import Home from './components/pages/Home';
 import Footer from './components/ui/Footer';
 import MobileMenu from './components/ui/MobileMenu';
 import Navbar from './components/ui/Navbar';
+import MangaSearch from './components/pages/MangaSearch'
+import MangaDetail from './components/pages/MangaDetail/MangaDetail';
 
 
 
@@ -43,6 +45,8 @@ class App extends Component<Props, State> {
                     <Route exact path="/anime/seasons" component={AnimeSeasons} />
                     <Route exact path="/anime/schedule" component={AnimeSchedule} />
                     <Route exact path="/anime/details/:id" component={AnimeDetail} />
+                    <Route exact path="/manga" component={MangaSearch} />
+                    <Route exact path="/manga/details/:id" component={MangaDetail} />
                 </div>
                 <hr style={{ height: '3', }} />
                 <Footer />

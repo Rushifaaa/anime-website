@@ -87,8 +87,8 @@ class Navbar extends Component<Props, State> {
                             <Button className={this.props.classes.button} href="/anime/seasons">Seasons</Button>
                         </div>
                     ) : (null)}
-
                 </div>
+                <Button className={this.props.classes.button} href="/manga">Manga</Button>
 
             </div>
         );
