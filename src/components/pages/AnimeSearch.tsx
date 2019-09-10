@@ -1,9 +1,10 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Theme } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
 import React, { Component, Key } from 'react';
-import AnimeMovie from '../AnimeMovie';
-import { AnimeDetails } from '../AnimeSchedule';
-import { genres } from '../../../models/Genres';
+import AnimeMovie from './AnimeMovie';
+import { AnimeDetails } from './AnimeSchedule';
+import { genres } from '../../models/Genres';
+import { handleEnterPress } from '../../models/generalModel';
 
 const style = (theme: Theme) => createStyles({
     root: {
@@ -114,7 +115,7 @@ class AnimeSearch extends Component<Props, State> {
 
                 <div className={this.props.classes.multiSelect}>
                     <input type="text" value={this.state.inputValue}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange} onKeyDown={(e: any) => { handleEnterPress(e, this.search) }} />
                     <Button type="submit" style={{ color: 'white' }} onClick={this.search}>Search</Button><br />
                     <div>
                         <FormControl className={this.props.classes.formControl}>

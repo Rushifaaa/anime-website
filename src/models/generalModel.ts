@@ -13,3 +13,11 @@ export const fetchDetails = async (type: string, request: string, id: number) =>
     return response.json();
 
 }
+
+export const handleEnterPress = (e: any, search: any) => {
+    console.log(e.key);
+    if (e.key === "Enter") {
+        search();
+    }
+
+}

@@ -78,12 +78,33 @@ export interface Articles {
 }
 
 export interface Pictures {
-    small: string;
-    large: string;
+    small: string | undefined;
+    large: string | undefined;
+}
+
+interface stats_detail {
+    votes: number;
+    percentage: number;
 }
 
 export interface Stats {
-
+    reading: number;
+    completed: number;
+    on_hold: number;
+    dropped: number;
+    plan_to_read: number;
+    scores: {
+        1: stats_detail;
+        2: stats_detail;
+        3: stats_detail;
+        4: stats_detail;
+        5: stats_detail;
+        6: stats_detail;
+        7: stats_detail;
+        8: stats_detail;
+        9: stats_detail;
+        10: stats_detail;
+    }
 }
 
 export interface Forum {

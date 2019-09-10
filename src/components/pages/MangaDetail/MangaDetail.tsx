@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Theme, createStyles, WithStyles, withStyles, Tabs, Tab, Typography, Box } from '@material-ui/core';
 import { getManga } from './../../../models/mangaModel';
 import { RouteComponentProps } from 'react-router';
-import { MangaDetailed, Characters, Articles } from '../../../types/MangaDetailed';
+import { MangaDetailed, Characters, Articles, Pictures, Stats } from '../../../types/MangaDetailed';
 import { AnimeDetailHeader, AnimeStatus, AnimeDescription, AnimeCredits } from '../AnimeDetail/AnimeDetailComponents';
 import { thisExpression } from '@babel/types';
 import { fetchDetails } from '../../../models/generalModel';
@@ -50,7 +50,8 @@ interface State {
     manga: MangaDetailed | null;
     characters: Characters[];
     news: Articles[];
-    pictures: Pictures[]
+    pictures: Pictures[];
+    stats: Stats | null;
     tabValue: number;
 }
 
@@ -63,6 +64,8 @@ class MangaDetail extends Component<Props, State> {
             tabValue: 0,
             characters: [],
             news: [],
+            pictures: [],
+            stats: null,
         }
     }
 
@@ -72,12 +75,24 @@ class MangaDetail extends Component<Props, State> {
         setTimeout(() => {
             console.log("test");
             this.getMangaNews();
+            this.getMangaPictures();
         }, 1000);
+        setTimeout(() => {
+            this.getMangaStats();
+        }, 2000);
     }
 
     getManga = async () => {
-        const response = await getManga(this.props.match.params.id);
-        this.setState({ manga: await response });
+        let responseOk = false;
+        let response;
+        while (!responseOk) {
+            response = await getManga(this.props.match.params.id);
+            if (response.status !== 429) {
+                responseOk = true;
+            }
+        }
+
+        this.setState({ manga: response });
     }
 
     getMangaCharacters = async () => {
@@ -93,6 +108,11 @@ class MangaDetail extends Component<Props, State> {
     getMangaPictures = async () => {
         const response = await fetchDetails("manga", "pictures", this.props.match.params.id);
         this.setState({ pictures: response.pictures });
+    }
+
+    getMangaStats = async () => {
+        const response = await fetchDetails("manga", "stats", this.props.match.params.id);
+        this.setState({ stats: response });
     }
 
     TabPanel(props: any) {
@@ -127,7 +147,9 @@ class MangaDetail extends Component<Props, State> {
         const manga = this.state && this.state.manga;
         const characters = this.state && this.state.characters;
         const news = this.state && this.state.news;
-        if (!manga || !characters || !news) {
+        const pictures = this.state && this.state.pictures;
+        const stats = this.state && this.state.stats;
+        if (!manga || !characters || !news || !pictures || !stats) {
             return <div>sssss</div>;
         }
 
@@ -212,8 +234,9 @@ class MangaDetail extends Component<Props, State> {
                     <this.TabPanel value={this.state.tabValue} index={2}>
                         <div>
                             {news.map((article) => (
-                                <div>
-                                    <img style={{ width: '20%' }} src={article.image_url} alt={article.author_name + ""} />
+                                <div style={{
+                                    margin: '20px',
+                                }}>
                                     <p>{article.intro}</p>
                                     <p>{`by ${article.author_name}`}</p>
                                 </div>
@@ -221,10 +244,44 @@ class MangaDetail extends Component<Props, State> {
                         </div>
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={3}>
-                        <p>Hello</p>
+                        <div style={{
+                            display: 'flex',
+                            flexWrap: 'wrap'
+                        }}>
+                            {pictures.map((picture) => (
+                                <div>
+                                    <img src={picture.small} alt={picture.small} />
+                                </div>
+                            ))}
+                        </div>
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={4}>
-                        <p>Hello</p>
+                        <div>
+                            <div>
+                                {/* Make a graph for the userratings*/}
+                                <p>One Score/Star</p>
+                                {stats.scores[1].percentage}
+                                <p>Two Scores/Stars</p>
+                                {stats.scores[2].percentage}
+                                <p>Three Scores/Stars</p>
+                                {stats.scores[3].percentage}
+                                <p>Four Scores/Stars</p>
+                                {stats.scores[4].percentage}
+                                <p>Five Scores/Stars</p>
+                                {stats.scores[5].percentage}
+                                <p>Six Scores/Stars</p>
+                                {stats.scores[6].percentage}
+                                <p>Seven Scores/Stars</p>
+                                {stats.scores[7].percentage}
+                                <p>Eight Scores/Stars</p>
+                                {stats.scores[8].percentage}
+                                <p>Nine Scores/Stars</p>
+                                {stats.scores[9].percentage}
+                                <p>Ten Scores/Stars</p>
+                                {stats.scores[10].percentage}
+
+                            </div>
+                        </div>
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={5}>
                         <p>Hello</p>

@@ -4,6 +4,7 @@ import { WithStyles } from '@material-ui/styles';
 import { genres } from '../../models/Genres';
 import MangaItem from './MangaItem';
 import { MangaDetail } from '../../types/MangaDetailed';
+import { handleEnterPress } from '../../models/generalModel';
 
 const style = (theme: Theme) => createStyles({
     mainDiv: {
@@ -40,6 +41,8 @@ interface State {
     mangas: MangaDetail[],
     selectValue: string[]
 }
+
+
 
 class MangaSearch extends Component<Props, State> {
 
@@ -88,6 +91,7 @@ class MangaSearch extends Component<Props, State> {
         console.log("##MANGAS", this.state.mangas);
     }
 
+
     render() {
 
         const mangaList = this.state.mangas && this.state.mangas.length > 0 ?
@@ -99,7 +103,7 @@ class MangaSearch extends Component<Props, State> {
             <div className={this.props.classes.mainDiv}>
                 <div className={this.props.classes.mangaSearch}>
                     <input type="text" value={this.state.inputValue}
-                        onChange={this.handleChange} />
+                        onChange={this.handleChange} onKeyDown={(e: any) => { handleEnterPress(e, this.search) }} />
                     <Button type="submit" style={{ color: 'white' }} onClick={this.search}>Search</Button> <br />
                     <div>
                         <FormControl className={this.props.classes.formControl}>

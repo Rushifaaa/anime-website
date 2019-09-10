@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import About from './components/pages/About';
 import AnimeDetail from './components/pages/AnimeDetail/AnimeDetail';
 import AnimeSchedule from './components/pages/AnimeSchedule';
-import AnimeSearch from './components/pages/AnimeSearch/AnimeSearch';
+import AnimeSearch from './components/pages/AnimeSearch';
 import AnimeSeasons from './components/pages/AnimeSeasons';
 import Home from './components/pages/Home';
 import Footer from './components/ui/Footer';
