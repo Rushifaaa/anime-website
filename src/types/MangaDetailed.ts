@@ -58,7 +58,7 @@ export interface MangaDetailed {
 }
 
 export interface Characters {
-    mal_id: number | null;
+    mal_id: number | undefined;
     url: string | null;
     image_url: string | undefined;
     name: string | null;
@@ -66,7 +66,7 @@ export interface Characters {
 }
 
 export interface Articles {
-    url: string | null;
+    url: string | undefined;
     title: string | null;
     date: string | null;
     author_name: string | null;
@@ -108,7 +108,19 @@ export interface Stats {
 }
 
 export interface Forum {
-
+    topic_id: number;
+    url: string;
+    title: string;
+    date_posted: string;
+    author_name: string;
+    author_url: string;
+    replies: string;
+    last_post: {
+        url: string;
+        author_name: string;
+        author_url: string;
+        date_posted: string;
+    }
 }
 
 export interface MoreInfo {
@@ -116,11 +128,33 @@ export interface MoreInfo {
 }
 
 export interface Reviews {
-
+    mal_id: number;
+    url: string;
+    helpful_count: number;
+    date: string;
+    reviewer: {
+        url: string;
+        image_url: string;
+        username: string;
+        chapters_read: number;
+        scores: {
+            overall: number;
+            story: number;
+            art: number;
+            character: number;
+            enjoyment: number;
+        };
+    };
+    content: string;
 }
 
 export interface Recommendations {
-
+    mal_id: number;
+    url: string;
+    image_url: string;
+    recommendation_url: string;
+    title: string;
+    recommendation_count: number;
 }
 
 export interface UserUpdates {

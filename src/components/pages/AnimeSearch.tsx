@@ -1,10 +1,10 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, Theme } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
-import React, { Component, Key } from 'react';
+import React, { Component } from 'react';
+import { handleEnterPress } from '../../models/generalModel';
+import { genres } from '../../models/Genres';
 import AnimeMovie from './AnimeMovie';
 import { AnimeDetails } from './AnimeSchedule';
-import { genres } from '../../models/Genres';
-import { handleEnterPress } from '../../models/generalModel';
 
 const style = (theme: Theme) => createStyles({
     root: {

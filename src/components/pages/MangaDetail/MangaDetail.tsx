@@ -1,12 +1,10 @@
+import { Box, createStyles, Tab, Tabs, Theme, Typography, WithStyles, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
-import { Theme, createStyles, WithStyles, withStyles, Tabs, Tab, Typography, Box } from '@material-ui/core';
-import { getManga } from './../../../models/mangaModel';
 import { RouteComponentProps } from 'react-router';
-import { MangaDetailed, Characters, Articles, Pictures, Stats } from '../../../types/MangaDetailed';
-import { AnimeDetailHeader, AnimeStatus, AnimeDescription, AnimeCredits } from '../AnimeDetail/AnimeDetailComponents';
-import { thisExpression } from '@babel/types';
-import { fetchDetails } from '../../../models/generalModel';
-import { timeout } from 'q';
+import { Articles, Characters, Forum, MangaDetailed, Pictures, Stats, Reviews, Recommendations } from '../../../types/MangaDetailed';
+import { AnimeCredits, AnimeDescription, AnimeDetailHeader, AnimeStatus } from '../AnimeDetail/AnimeDetailComponents';
+import { getManga, getMangaCharacters, getMangaForum, getMangaNews, getMangaPictures, getMangaStats, getMangaReviews, getMangaRecommendations } from './../../../models/mangaModel';
+import { MangaCharacter, MangaNews, MangaPictures, MangaForum, MangaMoreInfo, MangaReviews, MangaRecommendations } from './MangaDetailComponent';
 
 const style = (theme: Theme) => createStyles({
 
@@ -52,6 +50,10 @@ interface State {
     news: Articles[];
     pictures: Pictures[];
     stats: Stats | null;
+    topics: Forum[];
+    topicsAvailable: boolean
+    reviews: Reviews[];
+    recommendations: Recommendations[];
     tabValue: number;
 }
 
@@ -65,55 +67,40 @@ class MangaDetail extends Component<Props, State> {
             characters: [],
             news: [],
             pictures: [],
+            topics: [],
+            topicsAvailable: false,
+            reviews: [],
+            recommendations: [],
             stats: null,
         }
     }
 
-    componentDidMount() {
-        this.getManga();
-        this.getMangaCharacters();
-        setTimeout(() => {
-            console.log("test");
-            this.getMangaNews();
-            this.getMangaPictures();
-        }, 1000);
-        setTimeout(() => {
-            this.getMangaStats();
-        }, 2000);
-    }
+    async componentDidMount() {
+        const id = this.props.match.params.id;
+        console.log(id);
 
-    getManga = async () => {
-        let responseOk = false;
-        let response;
-        while (!responseOk) {
-            response = await getManga(this.props.match.params.id);
-            if (response.status !== 429) {
-                responseOk = true;
-            }
+        this.setState({
+            manga: await getManga(id),
+            characters: await getMangaCharacters(id),
+            news: await getMangaNews(id),
+            pictures: await getMangaPictures(id),
+            stats: await getMangaStats(id),
+            topics: await getMangaForum(id),
+            reviews: await getMangaReviews(id),
+            recommendations: await getMangaRecommendations(id),
+        })
+
+
+        if (this.state.topics.length === 0) {
+            this.setState({ topicsAvailable: false });
+        } else {
+            this.setState({ topicsAvailable: true });
         }
 
-        this.setState({ manga: response });
+
     }
 
-    getMangaCharacters = async () => {
-        const response = await fetchDetails("manga", "characters", this.props.match.params.id);
-        this.setState({ characters: response.characters });
-    }
 
-    getMangaNews = async () => {
-        const response = await fetchDetails("manga", "news", this.props.match.params.id);
-        this.setState({ news: response.articles })
-    }
-
-    getMangaPictures = async () => {
-        const response = await fetchDetails("manga", "pictures", this.props.match.params.id);
-        this.setState({ pictures: response.pictures });
-    }
-
-    getMangaStats = async () => {
-        const response = await fetchDetails("manga", "stats", this.props.match.params.id);
-        this.setState({ stats: response });
-    }
 
     TabPanel(props: any) {
         const { children, value, index, ...other } = props;
@@ -153,6 +140,9 @@ class MangaDetail extends Component<Props, State> {
             return <div>sssss</div>;
         }
 
+
+
+
         return (
             <div className={this.props.classes.mainDiv}>
 
@@ -178,7 +168,6 @@ class MangaDetail extends Component<Props, State> {
                         <Tab label="Mor Info" {...this.allyProps(6)} />
                         <Tab label="Reviews" {...this.allyProps(7)} />
                         <Tab label="Recomandations" {...this.allyProps(8)} />
-                        <Tab label="Userupdates" {...this.allyProps(9)} />
 
                     </Tabs>
                     <this.TabPanel value={this.state.tabValue} index={0}>
@@ -207,53 +196,13 @@ class MangaDetail extends Component<Props, State> {
 
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={1}>
-                        <div id="test" style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            {characters.map((character) => (
-                                <div style={{
-                                    width: '30%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <img style={{
-                                        width: '100%',
-                                        padding: '20px'
-                                    }} src={character.image_url} alt={character.name + ""} />
-                                    <p style={{ display: 'inline-block' }}>{character.name}</p>
-                                </div>
-                            ))}
-                        </div>
-
+                        <MangaCharacter characters={characters} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={2}>
-                        <div>
-                            {news.map((article) => (
-                                <div style={{
-                                    margin: '20px',
-                                }}>
-                                    <p>{article.intro}</p>
-                                    <p>{`by ${article.author_name}`}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <MangaNews news={this.state.news} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={3}>
-                        <div style={{
-                            display: 'flex',
-                            flexWrap: 'wrap'
-                        }}>
-                            {pictures.map((picture) => (
-                                <div>
-                                    <img src={picture.small} alt={picture.small} />
-                                </div>
-                            ))}
-                        </div>
+                        <MangaPictures pictures={this.state.pictures} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={4}>
                         <div>
@@ -284,19 +233,18 @@ class MangaDetail extends Component<Props, State> {
                         </div>
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={5}>
-                        <p>Hello</p>
+                        {this.state.topicsAvailable ?
+                            <MangaForum topics={this.state.topics} /> : <div>No topics Available for this Manga</div>
+                        }
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={6}>
-                        <p>Hello</p>
+                        <MangaMoreInfo />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={7}>
-                        <p>Hello</p>
+                        <MangaReviews reviews={this.state.reviews} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={8}>
-                        <p>Hello</p>
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.tabValue} index={9}>
-                        <p>Hello</p>
+                        <MangaRecommendations recommendations={this.state.recommendations} />
                     </this.TabPanel>
                 </div>
 
