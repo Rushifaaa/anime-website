@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { createStyles, Theme, withStyles, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { createStyles, Theme, withStyles, Button, FormControl, InputLabel, Select, MenuItem, MuiThemeProvider, TextField, CircularProgress } from '@material-ui/core';
 import { WithStyles } from '@material-ui/styles';
 import { genres } from '../../models/Genres';
 import MangaItem from './MangaItem';
 import { MangaDetail } from '../../types/MangaDetailed';
-import { handleEnterPress } from '../../models/generalModel';
+import { theme } from '../ui/Theme';
+import _ from 'lodash';
 
 const style = (theme: Theme) => createStyles({
     mainDiv: {
@@ -27,6 +28,11 @@ const style = (theme: Theme) => createStyles({
         maxWidth: 150,
         color: 'white',
     },
+    search: {
+        marginTop: '30px',
+        fontSize: '20px',
+        color: 'white'
+    }
 
 });
 
@@ -39,7 +45,8 @@ interface State {
     url: string,
     action: boolean,
     mangas: MangaDetail[],
-    selectValue: string[]
+    selectValue: string[],
+    loading: boolean,
 }
 
 
@@ -54,14 +61,28 @@ class MangaSearch extends Component<Props, State> {
             url: "https://api.jikan.moe/v3/search/manga/?q=",
             action: false,
             mangas: [],
-            selectValue: []
+            selectValue: [],
+            loading: false
         }
     }
 
     handleChange = (e: { target: { value: any; }; }) => {
         const text = e.target.value;
         this.setState({ inputValue: text });
+        const textString = text.toString();
+        const lengthOfText = textString.length;
+        if (lengthOfText >= 3) {
+            this.handleChangeDeBounce();
+        }
     }
+
+    handleChangeDeBounce: () => void = _.debounce(() => {
+        this.search();
+    }, 400);
+
+    searchAfterGenreChange: () => void = _.debounce(() => {
+        this.search();
+    }, 200);
 
     handleChangeAction = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ action: e.target.checked });
@@ -69,6 +90,7 @@ class MangaSearch extends Component<Props, State> {
 
     handleMultiSelectChange = (e: any) => {
         this.setState({ selectValue: e.target.value as string[] });
+        this.searchAfterGenreChange();
     }
 
     search = async () => {
@@ -76,7 +98,7 @@ class MangaSearch extends Component<Props, State> {
         const url = this.state.url + this.state.inputValue + params;
 
         console.log("Fecthing mangas with", url);
-
+        this.setState({ loading: true });
         const response = await fetch(
             url,
             {
@@ -87,10 +109,40 @@ class MangaSearch extends Component<Props, State> {
         );
 
         const mangas = (await response.json()).results;
-        this.setState({ mangas })
+        this.setState({ mangas, loading: false });
         console.log("##MANGAS", this.state.mangas);
     }
 
+    handleEnterPress = (e: any) => {
+        console.log(e.key);
+        if (e.key === "Enter") {
+            this.search();
+        }
+
+    }
+
+    minLetters = (mangaList: any) => {
+        if (this.state.inputValue.length === 0 && this.state.selectValue.length === 0) {
+            return (
+                <div className={this.props.classes.search}>Search Animes by <strong>title</strong> or select a <strong>genre</strong></div>
+            );
+        } else if (this.state.inputValue.length < 3 && this.state.selectValue.length === 0) {
+            return (
+                <div className={this.props.classes.search}>Please enter a <strong>minimum</strong> of 3 <strong>characters</strong></div>
+            );
+        } else {
+            return (
+                this.state.loading ?
+                    <div className={this.props.classes.search}>
+                        <CircularProgress color="secondary" />
+                    </div>
+                    :
+                    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {mangaList}
+                    </div>
+            );
+        }
+    }
 
     render() {
 
@@ -100,32 +152,39 @@ class MangaSearch extends Component<Props, State> {
             ) : null;
 
         return (
-            <div className={this.props.classes.mainDiv}>
-                <div className={this.props.classes.mangaSearch}>
-                    <input type="text" value={this.state.inputValue}
-                        onChange={this.handleChange} onKeyDown={(e: any) => { handleEnterPress(e, this.search) }} />
-                    <Button type="submit" style={{ color: 'white' }} onClick={this.search}>Search</Button> <br />
-                    <div>
-                        <FormControl className={this.props.classes.formControl}>
-                            <InputLabel htmlFor="select-multiple-checkbox">Genre</InputLabel>
-                            <Select
-                                style={{ color: 'white' }}
-                                variant="filled"
-                                multiple
-                                onChange={this.handleMultiSelectChange}
-                                value={this.state.selectValue}
-                            >
-                                {Object.keys(genres).map((id) => (
-                                    <MenuItem key={id} value={`&genre=${id}`}>{genres[id]}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+            <MuiThemeProvider theme={theme}>
+                <div className={this.props.classes.mainDiv}>
+                    <div className={this.props.classes.mangaSearch}>
+                        <TextField type="search" label="Search Manga" value={this.state.inputValue}
+                            onChange={this.handleChange} onKeyDown={(e: any) => { this.handleEnterPress(e) }} style={{ marginRight: '20px' }} />
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}>
+                            <FormControl className={this.props.classes.formControl}>
+                                <InputLabel htmlFor="select-multiple-checkbox">Genre</InputLabel>
+                                <Select
+                                    style={{ color: 'white' }}
+                                    variant="filled"
+                                    multiple
+                                    onChange={this.handleMultiSelectChange}
+                                    value={this.state.selectValue}
+                                >
+                                    {Object.keys(genres).map((id) => (
+                                        <MenuItem key={id} value={`&genre=${id}`}>{genres[id]}</MenuItem>
+                                    ))}
+
+                                </Select>
+                            </FormControl>
+                        </div>
+
                     </div>
+
+                    {this.minLetters(mangaList)}
+
+
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {mangaList}
-                </div>
-            </div>
+            </MuiThemeProvider>
         );
     }
 
