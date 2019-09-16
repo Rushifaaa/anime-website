@@ -47,6 +47,11 @@ const theme = createMuiTheme({
                 color: 'white',
                 fontSize: '15px',
             }
+        },
+        MuiIconButton: {
+            root: {
+                borderRadius: '0',
+            }
         }
     }
 });

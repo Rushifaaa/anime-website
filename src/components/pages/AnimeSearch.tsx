@@ -182,7 +182,7 @@ class AnimeSearch extends Component<Props, State> {
                                     value={this.state.selectValue}
                                 >
                                     {Object.keys(genres).map((id) => (
-                                        <MenuItem key={id} value={`&genre=${id}`}>{genres[id]}</MenuItem>
+                                        <MenuItem key={id} value={`genre=${id}`}>{genres[id]}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>

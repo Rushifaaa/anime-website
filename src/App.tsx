@@ -10,7 +10,7 @@ import AnimeSeasons from './components/pages/AnimeSeasons';
 import Home from './components/pages/Home';
 import Footer from './components/ui/Footer';
 import MobileMenu from './components/ui/MobileMenu';
-import Navbar from './components/ui/Navbar';
+import Navbar from './components/ui/Navbar/Navbar';
 import MangaSearch from './components/pages/MangaSearch'
 import MangaDetail from './components/pages/MangaDetail/MangaDetail';
 

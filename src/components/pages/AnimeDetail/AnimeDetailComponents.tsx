@@ -130,7 +130,8 @@ export const AnimeDetailHeader = (props: {
             <img style={{
                 float: 'left',
                 margin: '20px',
-                maxWidth: '15%',
+                maxWidth: '20%',
+                minWidth: '20%'
             }} src={props.imageUrl} alt={`${props.romajiTitle}`} />
 
             <div style={{

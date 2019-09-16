@@ -52,12 +52,21 @@ type Props = WithStyles<typeof style> & RouteComponentProps & {
 }
 
 interface State {
-    anime: AnimeDetailed;
+    anime: AnimeDetailed | null;
     loading: boolean
 }
 
 
 class AnimeDetail extends Component<Props, State> {
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            anime: null,
+            loading: true,
+        }
+    }
 
     componentDidMount() {
         this.getAnime();
@@ -86,8 +95,9 @@ class AnimeDetail extends Component<Props, State> {
     }
 
     renderContent() {
+
         const anime = this.state && this.state.anime;
-        if (!anime) {
+        if (!anime || anime === null) {
             return <div>sssss</div>;
         }
         if (!anime.genres) {
@@ -114,8 +124,8 @@ class AnimeDetail extends Component<Props, State> {
                     <AnimeDescription title="Description:" synopsis={anime.synopsis} />
 
                     <div className={this.props.classes.animeOpeningEnding}>
-                        <AnimeTheme themes={this.state.anime.opening_themes} title="Opening Themes:" />
-                        <AnimeTheme themes={this.state.anime.ending_themes} title="Ending Themes:" />
+                        <AnimeTheme themes={anime.opening_themes} title="Opening Themes:" />
+                        <AnimeTheme themes={anime.ending_themes} title="Ending Themes:" />
                         {/* <div className={this.props.classes.openingList}>
                             <p className={this.props.classes.themesTitle}>Ending Theme/s: </p>
                             {anime.ending_themes.map((ending) => (
