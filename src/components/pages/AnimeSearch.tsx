@@ -1,11 +1,11 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Theme, TextField, MuiThemeProvider, CircularProgress } from '@material-ui/core';
+import { CircularProgress, FormControl, InputLabel, MenuItem, MuiThemeProvider, Select, TextField, Theme } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { genres } from '../../models/Genres';
+import { theme } from '../ui/Theme';
 import AnimeMovie from './AnimeMovie';
 import { AnimeDetails } from './AnimeSchedule';
-import _ from 'lodash';
-import { theme } from '../ui/Theme';
 
 const style = (theme: Theme) => createStyles({
     root: {
@@ -38,7 +38,8 @@ const style = (theme: Theme) => createStyles({
         flexDirection: 'row',
         maxWidth: '90%',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     search: {
         marginTop: '30px',

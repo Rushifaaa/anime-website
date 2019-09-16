@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router';
 import { animeModel } from '../../../models/animeModel';
 import { AnimeDetailed } from '../../../types/AnimeDetailed';
 import { AnimeCredits, AnimeDescription, AnimeDetailHeader, AnimeStatus, AnimeTheme } from './AnimeDetailComponents';
+import { CircularProgress } from '@material-ui/core';
+
 
 const style = () => createStyles({
     animeDetailsMain: {
@@ -51,6 +53,7 @@ type Props = WithStyles<typeof style> & RouteComponentProps & {
 
 interface State {
     anime: AnimeDetailed;
+    loading: boolean
 }
 
 
@@ -61,12 +64,28 @@ class AnimeDetail extends Component<Props, State> {
     }
 
     getAnime = async () => {
+        this.setState({ loading: true })
         const response = await animeModel.getAnime(this.props.match.params.id);
-        this.setState({ anime: await response });
+        const anime = await response;
+        this.setState({ loading: false })
+        this.setState({ anime });
     }
 
-    render() {
-        //const anime = this.state.anime;
+    renderLoading() {
+        return (
+            <div style={{
+                display: 'flex',
+                width: '100%',
+                height: "calc(100vh - 90px)",
+                alignItems: 'center',
+                justifyContent: 'center'
+            }} >
+                <CircularProgress color="secondary" />
+            </div>
+        );
+    }
+
+    renderContent() {
         const anime = this.state && this.state.anime;
         if (!anime) {
             return <div>sssss</div>;
@@ -78,7 +97,7 @@ class AnimeDetail extends Component<Props, State> {
         //const anime = animeModel.currentSelectedAnime
 
         return (
-            <div className={this.props.classes.animeDetailsMain}>
+            <div>
                 <div className={this.props.classes.animeDetailsHeader}>
                     <AnimeDetailHeader englishTitle={anime.title_english} japaneseTitle={anime.title_japanese}
                         romajiTitle={anime.title} genres={anime.genres} imageUrl={anime.image_url} />
@@ -116,6 +135,14 @@ class AnimeDetail extends Component<Props, State> {
                     </div>
                 </div>
             </div>
+        );
+    }
+
+    render() {
+        return (
+            <div className={this.props.classes.animeDetailsMain}>
+                {this.state.loading ? this.renderLoading() : this.renderContent()}
+            </div >
         );
     }
 }

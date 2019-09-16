@@ -83,7 +83,12 @@ class MangaItem extends Component<Props, State> {
 
         const manga = this.props.manga;
         return (
-            <div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '10px'
+            }}>
                 <Link to={`/manga/details/${manga.mal_id}`}>
                     <div className={this.props.classes.animeContent}
                         onMouseOver={this.onAnimeItemHover}

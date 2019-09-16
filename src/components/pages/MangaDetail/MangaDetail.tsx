@@ -5,6 +5,8 @@ import { Articles, Characters, Forum, MangaDetailed, Pictures, Stats, Reviews, R
 import { AnimeCredits, AnimeDescription, AnimeDetailHeader, AnimeStatus } from '../AnimeDetail/AnimeDetailComponents';
 import { getManga, getMangaCharacters, getMangaForum, getMangaNews, getMangaPictures, getMangaStats, getMangaReviews, getMangaRecommendations } from './../../../models/mangaModel';
 import { MangaCharacter, MangaNews, MangaPictures, MangaForum, MangaMoreInfo, MangaReviews, MangaRecommendations } from './MangaDetailComponent';
+import SwipeableViews from 'react-swipeable-views';
+import { theme } from '../../ui/Theme';
 
 const style = (theme: Theme) => createStyles({
 
@@ -89,7 +91,7 @@ class MangaDetail extends Component<Props, State> {
             moreInfoAvailable: false,
             reviewsAvailable: false,
             recommendationsAvailable: false,
-            loading: false,
+            loading: true,
         }
     }
 
@@ -100,15 +102,17 @@ class MangaDetail extends Component<Props, State> {
     async componentDidUpdate() {
         if (this.props.match.params.id !== this.state.oldID) {
             this.setState({ oldID: this.props.match.params.id, });
+            //this.setState({ loading: true });
             await this.fetchData();
         }
     }
 
     async fetchData() {
-        this.setState({ loading: true });
+
+        console.log(this.state.loading);
 
         const id = this.props.match.params.id;
-        console.log(id);
+        console.log(this.state.loading);
 
         const manga = await getManga(id);
         const characters = await getMangaCharacters(id);
@@ -118,6 +122,8 @@ class MangaDetail extends Component<Props, State> {
         const topics = await getMangaForum(id);
         const reviews = await getMangaReviews(id);
         const recommendations = await getMangaRecommendations(id);
+
+        console.log(this.state.loading);
 
         this.setState({
             loading: false,
@@ -131,6 +137,8 @@ class MangaDetail extends Component<Props, State> {
             recommendations,
             tabValue: 0,
         });
+
+        console.log(this.state.loading);
 
         this.available();
     }
@@ -176,7 +184,25 @@ class MangaDetail extends Component<Props, State> {
         });
     }
 
-    render() {
+    renderLoading() {
+        return (
+            <div style={{
+                display: 'flex',
+                width: '100%',
+                height: "calc(100vh - 90px)",
+                alignItems: 'center',
+                justifyContent: 'center'
+            }} >
+                <CircularProgress color="secondary" />
+            </div>
+        );
+    }
+
+    handleChangeIndex = (index: number) => {
+        this.setState({ tabValue: index })
+    }
+
+    renderContent() {
         const manga = this.state && this.state.manga;
         const characters = this.state && this.state.characters;
         const news = this.state && this.state.news;
@@ -187,120 +213,119 @@ class MangaDetail extends Component<Props, State> {
         }
 
         return (
-            <div className={this.props.classes.mainDiv}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: '90%',
+            }}>
 
-                {this.state.loading ?
-                    <div style={{
-                        display: 'flex',
-                        width: '100%',
-                        height: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }} ><CircularProgress color="secondary" /></div>
-
-                    :
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        width: '90%',
-                    }}>
-
-                        <Tabs
-                            orientation="vertical"
-                            variant="scrollable"
-                            value={this.state.tabValue}
-                            onChange={this.handleTabChange}
-                            style={{ overflow: "visible", marginLeft: '5%' }}
-                        >
-                            <Tab label="Overview" {...this.allyProps(0)} />
-                            {this.state.charactersAvailable ? <Tab label="Characters" {...this.allyProps(1)} /> : <Tab label="Characters" {...this.allyProps(1)} disabled />}
-                            {this.state.newsAvailable ? <Tab label="News" {...this.allyProps(2)} /> : <Tab label="News" {...this.allyProps(2)} disabled />}
-                            {this.state.picturesAvailable ? <Tab label="Pictures" {...this.allyProps(3)} /> : <Tab label="Pictures" {...this.allyProps(3)} disabled />}
-                            {this.state.statsAvailable ? <Tab label="Statistics" {...this.allyProps(4)} /> : <Tab label="Statistics" {...this.allyProps(4)} disabled />}
-                            {this.state.topicsAvailable ? <Tab label="Forum" {...this.allyProps(5)} /> : <Tab label="Forum" {...this.allyProps(5)} disabled />}
-                            {this.state.moreInfoAvailable ? <Tab label="More Info" {...this.allyProps(6)} /> : <Tab label="More Info" {...this.allyProps(6)} disabled />}
-                            {this.state.reviewsAvailable ? <Tab label="Reviews" {...this.allyProps(7)} /> : <Tab label="Reviews" {...this.allyProps(7)} disabled />}
-                            {this.state.recommendationsAvailable ? <Tab label="Recommendations" {...this.allyProps(8)} /> : <Tab label="Recommendations" {...this.allyProps(8)} disabled />}
-                        </Tabs>
-                        <this.TabPanel value={this.state.tabValue} index={0}>
-                            <div className={this.props.classes.mangaDetailsHeader}>
-                                <AnimeDetailHeader romajiTitle={manga.title} englishTitle={manga.title_english}
-                                    japaneseTitle={manga.title_japanese} genres={manga.genres} imageUrl={manga.image_url} />
-                            </div>
-                            <div className={this.props.classes.mangaDetailsContent}>
-                                <div className={this.props.classes.mangaStatusDetail}>
-                                    <AnimeStatus title="Type:" content={manga.type} />
-                                    <AnimeStatus title="Volumes:" content={manga.volumes} />
-                                    <AnimeStatus title="Chapters:" content={manga.chapters} />
-                                    <AnimeStatus title="Publishing:" content={manga.publishing ? "Yes" : "No"} />
-                                    <AnimeStatus title="Rank:" content={manga.rank} />
-                                </div>
-
-                                <AnimeDescription title="Description:" synopsis={manga.synopsis} />
-
-                                <div className={this.props.classes.mangaCredits}>
-                                    <hr />
-                                    <AnimeCredits credits={manga.authors} title="Authors:" />
-                                    <hr />
-                                    <AnimeCredits credits={manga.seralizations} title="Serializations:" />
-                                </div>
+                <Tabs
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={this.state.tabValue}
+                    onChange={this.handleTabChange}
+                    style={{ overflow: "visible", marginLeft: '5%' }}
+                >
+                    <Tab label="Overview" {...this.allyProps(0)} />
+                    {this.state.charactersAvailable ? <Tab label="Characters" {...this.allyProps(1)} /> : <Tab label="Characters" {...this.allyProps(1)} disabled />}
+                    {this.state.newsAvailable ? <Tab label="News" {...this.allyProps(2)} /> : <Tab label="News" {...this.allyProps(2)} disabled />}
+                    {this.state.picturesAvailable ? <Tab label="Pictures" {...this.allyProps(3)} /> : <Tab label="Pictures" {...this.allyProps(3)} disabled />}
+                    {this.state.statsAvailable ? <Tab label="Statistics" {...this.allyProps(4)} /> : <Tab label="Statistics" {...this.allyProps(4)} disabled />}
+                    {this.state.topicsAvailable ? <Tab label="Forum" {...this.allyProps(5)} /> : <Tab label="Forum" {...this.allyProps(5)} disabled />}
+                    {this.state.moreInfoAvailable ? <Tab label="More Info" {...this.allyProps(6)} /> : <Tab label="More Info" {...this.allyProps(6)} disabled />}
+                    {this.state.reviewsAvailable ? <Tab label="Reviews" {...this.allyProps(7)} /> : <Tab label="Reviews" {...this.allyProps(7)} disabled />}
+                    {this.state.recommendationsAvailable ? <Tab label="Recommendations" {...this.allyProps(8)} /> : <Tab label="Recommendations" {...this.allyProps(8)} disabled />}
+                </Tabs>
+                <SwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={this.state.tabValue}
+                    onChangeIndex={this.handleChangeIndex}
+                >
+                    <this.TabPanel value={this.state.tabValue} index={0}>
+                        <div className={this.props.classes.mangaDetailsHeader}>
+                            <AnimeDetailHeader romajiTitle={manga.title} englishTitle={manga.title_english}
+                                japaneseTitle={manga.title_japanese} genres={manga.genres} imageUrl={manga.image_url} />
+                        </div>
+                        <div className={this.props.classes.mangaDetailsContent}>
+                            <div className={this.props.classes.mangaStatusDetail}>
+                                <AnimeStatus title="Type:" content={manga.type} />
+                                <AnimeStatus title="Volumes:" content={manga.volumes} />
+                                <AnimeStatus title="Chapters:" content={manga.chapters} />
+                                <AnimeStatus title="Publishing:" content={manga.publishing ? "Yes" : "No"} />
+                                <AnimeStatus title="Rank:" content={manga.rank} />
                             </div>
 
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={1}>
-                            <MangaCharacter characters={characters} />
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={2}>
-                            <MangaNews news={this.state.news} />
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={3}>
-                            <MangaPictures pictures={this.state.pictures} />
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={4}>
+                            <AnimeDescription title="Description:" synopsis={manga.synopsis} />
+
+                            <div className={this.props.classes.mangaCredits}>
+                                <hr />
+                                <AnimeCredits credits={manga.authors} title="Authors:" />
+                                <hr />
+                                <AnimeCredits credits={manga.seralizations} title="Serializations:" />
+                            </div>
+                        </div>
+
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={1}>
+                        <MangaCharacter characters={characters} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={2}>
+                        <MangaNews news={this.state.news} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={3}>
+                        <MangaPictures pictures={this.state.pictures} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={4}>
+                        <div>
                             <div>
-                                <div>
-                                    {/* Make a graph for the userratings*/}
-                                    <p>One Score/Star</p>
-                                    {stats.scores[1].percentage}
-                                    <p>Two Scores/Stars</p>
-                                    {stats.scores[2].percentage}
-                                    <p>Three Scores/Stars</p>
-                                    {stats.scores[3].percentage}
-                                    <p>Four Scores/Stars</p>
-                                    {stats.scores[4].percentage}
-                                    <p>Five Scores/Stars</p>
-                                    {stats.scores[5].percentage}
-                                    <p>Six Scores/Stars</p>
-                                    {stats.scores[6].percentage}
-                                    <p>Seven Scores/Stars</p>
-                                    {stats.scores[7].percentage}
-                                    <p>Eight Scores/Stars</p>
-                                    {stats.scores[8].percentage}
-                                    <p>Nine Scores/Stars</p>
-                                    {stats.scores[9].percentage}
-                                    <p>Ten Scores/Stars</p>
-                                    {stats.scores[10].percentage}
+                                {/* Make a graph for the userratings*/}
+                                <p>One Score/Star</p>
+                                {stats.scores[1].percentage}
+                                <p>Two Scores/Stars</p>
+                                {stats.scores[2].percentage}
+                                <p>Three Scores/Stars</p>
+                                {stats.scores[3].percentage}
+                                <p>Four Scores/Stars</p>
+                                {stats.scores[4].percentage}
+                                <p>Five Scores/Stars</p>
+                                {stats.scores[5].percentage}
+                                <p>Six Scores/Stars</p>
+                                {stats.scores[6].percentage}
+                                <p>Seven Scores/Stars</p>
+                                {stats.scores[7].percentage}
+                                <p>Eight Scores/Stars</p>
+                                {stats.scores[8].percentage}
+                                <p>Nine Scores/Stars</p>
+                                {stats.scores[9].percentage}
+                                <p>Ten Scores/Stars</p>
+                                {stats.scores[10].percentage}
 
-                                </div>
                             </div>
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={5}>
-                            {this.state.topicsAvailable ?
-                                <MangaForum topics={this.state.topics} /> : <div>No topics Available for this Manga</div>
-                            }
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={6}>
-                            <MangaMoreInfo />
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={7}>
-                            <MangaReviews reviews={this.state.reviews} />
-                        </this.TabPanel>
-                        <this.TabPanel value={this.state.tabValue} index={8}>
-                            <MangaRecommendations recommendations={this.state.recommendations} />
-                        </this.TabPanel>
-                    </div>
-                }
+                        </div>
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={5}>
+                        {this.state.topicsAvailable ?
+                            <MangaForum topics={this.state.topics} /> : <div>No topics Available for this Manga</div>
+                        }
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={6}>
+                        <MangaMoreInfo />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={7}>
+                        <MangaReviews reviews={this.state.reviews} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.tabValue} index={8}>
+                        <MangaRecommendations recommendations={this.state.recommendations} />
+                    </this.TabPanel>
+                </SwipeableViews>
+            </div>
+        );
+    }
 
+    render() {
+        return (
+            <div className={this.props.classes.mainDiv}>
+                {this.state.loading ? this.renderLoading() : this.renderContent()}
             </div >
         );
     }

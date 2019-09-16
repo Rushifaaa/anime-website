@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { createStyles, Theme, withStyles, Button, FormControl, InputLabel, Select, MenuItem, MuiThemeProvider, TextField, CircularProgress } from '@material-ui/core';
+import { CircularProgress, createStyles, FormControl, InputLabel, MenuItem, MuiThemeProvider, Select, TextField, Theme, withStyles } from '@material-ui/core';
 import { WithStyles } from '@material-ui/styles';
+import _ from 'lodash';
+import React, { Component } from 'react';
 import { genres } from '../../models/Genres';
-import MangaItem from './MangaItem';
 import { MangaDetail } from '../../types/MangaDetailed';
 import { theme } from '../ui/Theme';
-import _ from 'lodash';
+import MangaItem from './MangaItem';
 
 const style = (theme: Theme) => createStyles({
     mainDiv: {
@@ -32,6 +32,14 @@ const style = (theme: Theme) => createStyles({
         marginTop: '30px',
         fontSize: '20px',
         color: 'white'
+    },
+    test: {
+        boxShadow: '0',
+        transition: 'box-shadow 0.4s',
+        '&:hover': {
+            opacity: 0.8,
+            boxShadow: '0 0 10px #fff'
+        }
     }
 
 });
@@ -137,7 +145,13 @@ class MangaSearch extends Component<Props, State> {
                         <CircularProgress color="secondary" />
                     </div>
                     :
-                    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        overflow: 'show'
+                    }}>
                         {mangaList}
                     </div>
             );
