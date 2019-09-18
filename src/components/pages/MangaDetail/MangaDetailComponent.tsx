@@ -2,6 +2,7 @@ import React from 'react';
 import { Characters, Pictures, Articles, Forum, Reviews, Recommendations } from '../../../types/MangaDetailed';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Rating from '@material-ui/lab/Rating';
 
 export const MangaCharacter = (props: {
     characters: Characters[]
@@ -190,3 +191,18 @@ export const MangaRecommendations = (props: {
             ))}
         </div>
     );
+
+
+export const MangaRating = (props: {
+    value: number;
+    maxValue: number;
+    stats: any;
+    indexNumber: number;
+}) => (
+        <div style={{
+            margin: '10px'
+        }}>
+            <Rating value={props.value} readOnly max={props.maxValue} />
+            <p>{`Votes: ${props.stats.scores[props.indexNumber].votes}`}</p>
+        </div>
+    )

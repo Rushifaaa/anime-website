@@ -4,9 +4,10 @@ import { RouteComponentProps } from 'react-router';
 import { Articles, Characters, Forum, MangaDetailed, Pictures, Stats, Reviews, Recommendations } from '../../../types/MangaDetailed';
 import { AnimeCredits, AnimeDescription, AnimeDetailHeader, AnimeStatus } from '../AnimeDetail/AnimeDetailComponents';
 import { getManga, getMangaCharacters, getMangaForum, getMangaNews, getMangaPictures, getMangaStats, getMangaReviews, getMangaRecommendations } from './../../../models/mangaModel';
-import { MangaCharacter, MangaNews, MangaPictures, MangaForum, MangaMoreInfo, MangaReviews, MangaRecommendations } from './MangaDetailComponent';
+import { MangaCharacter, MangaNews, MangaPictures, MangaForum, MangaMoreInfo, MangaReviews, MangaRecommendations, MangaRating } from './MangaDetailComponent';
 import SwipeableViews from 'react-swipeable-views';
 import { theme } from '../../ui/Theme';
+import Rating from '@material-ui/lab/Rating';
 
 const style = (theme: Theme) => createStyles({
 
@@ -281,32 +282,24 @@ class MangaDetail extends Component<Props, State> {
                         <MangaPictures pictures={this.state.pictures} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={4}>
-                        <div>
-                            <div>
-                                {/* Make a graph for the userratings*/}
-                                <p>One Score/Star</p>
-                                {stats.scores[1].percentage}
-                                <p>Two Scores/Stars</p>
-                                {stats.scores[2].percentage}
-                                <p>Three Scores/Stars</p>
-                                {stats.scores[3].percentage}
-                                <p>Four Scores/Stars</p>
-                                {stats.scores[4].percentage}
-                                <p>Five Scores/Stars</p>
-                                {stats.scores[5].percentage}
-                                <p>Six Scores/Stars</p>
-                                {stats.scores[6].percentage}
-                                <p>Seven Scores/Stars</p>
-                                {stats.scores[7].percentage}
-                                <p>Eight Scores/Stars</p>
-                                {stats.scores[8].percentage}
-                                <p>Nine Scores/Stars</p>
-                                {stats.scores[9].percentage}
-                                <p>Ten Scores/Stars</p>
-                                {stats.scores[10].percentage}
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}>
 
-                            </div>
+                            <MangaRating value={1} indexNumber={1} maxValue={10} stats={stats} />
+                            <MangaRating value={2} indexNumber={2} maxValue={10} stats={stats} />
+                            <MangaRating value={3} indexNumber={3} maxValue={10} stats={stats} />
+                            <MangaRating value={4} indexNumber={4} maxValue={10} stats={stats} />
+                            <MangaRating value={5} indexNumber={5} maxValue={10} stats={stats} />
+                            <MangaRating value={6} indexNumber={6} maxValue={10} stats={stats} />
+                            <MangaRating value={7} indexNumber={7} maxValue={10} stats={stats} />
+                            <MangaRating value={8} indexNumber={8} maxValue={10} stats={stats} />
+                            <MangaRating value={9} indexNumber={9} maxValue={10} stats={stats} />
+                            <MangaRating value={10} indexNumber={10} maxValue={10} stats={stats} />
+
                         </div>
+
                     </this.TabPanel>
                     <this.TabPanel value={this.state.tabValue} index={5}>
                         {this.state.topicsAvailable ?
