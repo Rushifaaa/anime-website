@@ -4,9 +4,9 @@ class AnimeModel {
     currentSelectedAnime?: AnimeDetails;
 
     async getAnime(id: number) {
-        console.log("fetching...", id);
+
         const response = await fetch(
-            `https://api.jikan.moe/v3/anime/${id}`,
+            `http://localhost:8080/v3/anime/${id}`,
             {
                 headers: {
                     Accept: 'application/json',

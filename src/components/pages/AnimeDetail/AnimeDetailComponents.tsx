@@ -10,7 +10,7 @@ export const AnimeStatus = (props: {
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: '20%',
+                width: '125px',
             }}
         >
             <p
@@ -123,15 +123,19 @@ export const AnimeDetailHeader = (props: {
     genres: DetailEntry[] | null;
     imageUrl: string | undefined;
 }) => (
-        <div style={{ width: '90%' }}>
+        <div style={{
+            width: '90%',
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
             <p>{props.romajiTitle}</p>
             <p style={{ fontSize: '15px' }}>{props.englishTitle}</p>
             <p style={{ fontSize: '15px' }}>{props.japaneseTitle}</p>
             <img style={{
                 float: 'left',
                 margin: '20px',
-                maxWidth: '20%',
-                minWidth: '20%'
+                maxWidth: '15%',
+                minWidth: '5%'
             }} src={props.imageUrl} alt={`${props.romajiTitle}`} />
 
             <div style={{

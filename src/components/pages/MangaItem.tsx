@@ -4,7 +4,7 @@ import { MangaDetail } from '../../types/MangaDetailed';
 import { Link } from 'react-router-dom';
 
 const style = (theme: Theme) => createStyles({
-    animeTitle: {
+    mangaTitle: {
         padding: '24px',
         width: '100%',
         color: 'rgba(235, 236, 255)',
@@ -27,20 +27,31 @@ const style = (theme: Theme) => createStyles({
         '&:hover': {
             opacity: 0.8,
             boxShadow: '0 0 10px #fff'
-        }
+        },
+        maxWidth: '30%',
+        minWidth: '5%'
+
     },
     animeTitleHover: {
         transform: 'translate(0%)'
     },
     animeImages: {
-        border: '1px solid black'
+        border: '1px solid black',
+        maxWidth: '100%',
+        minWidth: '100%'
     },
     animeText: {
         textDecoration: 'none',
         transition: 'text-decoration 0.4s',
         '&:hover': {
             textDecoration: 'underline'
-        }
+        },
+        fontSize: '15px',
+        '@media (max-width: 719px)': {
+            fontSize: '3vw',
+        },
+        maxHeight: '20%',
+        minHeight: '10%',
     },
     animeContent: {
         position: "relative",
@@ -87,7 +98,9 @@ class MangaItem extends Component<Props, State> {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '10px'
+                padding: '10px',
+                minWidth: '5%',
+                maxWidth: '30%'
             }}>
                 <Link to={`/manga/details/${manga.mal_id}`}>
                     <div className={this.props.classes.animeContent}
@@ -95,7 +108,7 @@ class MangaItem extends Component<Props, State> {
                         onMouseLeave={this.onAnimeItemLeave}>
                         <img className={this.props.classes.animeImages} src={manga.image_url} alt={manga.title + ""} />
                         <div
-                            className={`${this.state.animeTitleClasses} ${this.props.classes.animeTitle}`}
+                            className={`${this.state.animeTitleClasses} ${this.props.classes.mangaTitle}`}
                         >
                             <strong className={this.props.classes.animeText}>{manga.title}</strong>
                         </div>

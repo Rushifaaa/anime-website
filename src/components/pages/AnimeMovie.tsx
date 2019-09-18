@@ -17,16 +17,18 @@ const style = (theme: Theme) => createStyles({
         '&:hover': {
             opacity: 0.8,
             boxShadow: '0 0 10px #fff'
-        }
+        },
+        minWidth: '5%',
+        maxWidth: '30%'
     },
     animeTitle: {
         padding: '24px',
-        width: '100%', 
-        color: 'rgba(235, 236, 255)', 
-        position: 'absolute', 
-        bottom: 0, 
-        left: 0, 
-        background: 'rgba(0, 0, 0, 0.65)', 
+        width: '100%',
+        color: 'rgba(235, 236, 255)',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        background: 'rgba(0, 0, 0, 0.65)',
         transform: 'translate(-100%)',
         transition: 'transform 0.4s',
         textShadow: '1px 1px 5px white',
@@ -37,22 +39,30 @@ const style = (theme: Theme) => createStyles({
         transform: 'translate(0%)'
     },
     animeImages: {
-        border: '1px solid black'
+        border: '1px solid black',
+        maxWidth: '100%',
+        minWidth: '100%'
     },
     animeText: {
         textDecoration: 'none',
         transition: 'text-decoration 0.4s',
         '&:hover': {
             textDecoration: 'underline'
-        }
+        },
+        fontSize: '15px',
+        '@media (max-width: 719px)': {
+            fontSize: '3vw',
+        },
+        maxHeight: '20%',
+        minHeight: '10%',
     },
     animeContent: {
-        position: "relative", 
+        position: "relative",
         display: "flex",
     }
 });
 
-interface Props extends WithStyles<typeof style>{
+interface Props extends WithStyles<typeof style> {
     anime: AnimeDetails
 }
 interface State {
@@ -69,24 +79,24 @@ class AnimeMovie extends Component<Props, State> {
     }
 
     onAnimeItemHover = () => {
-        this.setState({animeTitleClasses: this.props.classes.animeTitleHover})
+        this.setState({ animeTitleClasses: this.props.classes.animeTitleHover })
     }
 
     onAnimeItemLeave = () => {
-        this.setState({animeTitleClasses: ""})
+        this.setState({ animeTitleClasses: "" })
     }
 
     render() {
         const anime = this.props.anime;
-        return(
+        return (
             <div className={this.props.classes.animeItems} key={anime.mal_id}>
-                <Link onClick={()=> {animeModel.currentSelectedAnime = anime;}} to={"/anime/details/" + anime.mal_id}>
+                <Link onClick={() => { animeModel.currentSelectedAnime = anime; }} to={"/anime/details/" + anime.mal_id}>
                     <div className={this.props.classes.animeContent}
-                    onMouseOver={this.onAnimeItemHover}
-                    onMouseLeave={this.onAnimeItemLeave}>
-                        <img className={this.props.classes.animeImages} src={anime.image_url} alt={anime.title + "-image"}/>
+                        onMouseOver={this.onAnimeItemHover}
+                        onMouseLeave={this.onAnimeItemLeave}>
+                        <img className={this.props.classes.animeImages} src={anime.image_url} alt={anime.title + "-image"} />
                         <div
-                        className={`${this.state.animeTitleClasses} ${this.props.classes.animeTitle}`}
+                            className={`${this.state.animeTitleClasses} ${this.props.classes.animeTitle}`}
                         >
                             <strong className={this.props.classes.animeText}>{anime.title}</strong>
                         </div>

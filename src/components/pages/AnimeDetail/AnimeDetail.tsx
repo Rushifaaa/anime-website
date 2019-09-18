@@ -103,7 +103,7 @@ class AnimeDetail extends Component<Props, State> {
         if (!anime.genres) {
             return;
         }
-        console.log(anime.mal_id)
+
         //const anime = animeModel.currentSelectedAnime
 
         return (

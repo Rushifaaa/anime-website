@@ -66,7 +66,7 @@ class MangaSearch extends Component<Props, State> {
 
         this.state = {
             inputValue: "",
-            url: "https://api.jikan.moe/v3/search/manga/?q=",
+            url: "http://localhost:8080/v3/search/manga/?q=",
             action: false,
             mangas: [],
             selectValue: [],
@@ -105,7 +105,7 @@ class MangaSearch extends Component<Props, State> {
         const params = this.state.selectValue.join("");
         const url = this.state.url + this.state.inputValue + params;
 
-        console.log("Fecthing mangas with", url);
+
         this.setState({ loading: true });
         const response = await fetch(
             url,
@@ -118,11 +118,11 @@ class MangaSearch extends Component<Props, State> {
 
         const mangas = (await response.json()).results;
         this.setState({ mangas, loading: false });
-        console.log("##MANGAS", this.state.mangas);
+
     }
 
     handleEnterPress = (e: any) => {
-        console.log(e.key);
+
         if (e.key === "Enter") {
             this.search();
         }
@@ -150,7 +150,8 @@ class MangaSearch extends Component<Props, State> {
                         flexDirection: 'row',
                         flexWrap: 'wrap',
                         justifyContent: 'center',
-                        overflow: 'show'
+                        overflow: 'show',
+                        width: '90%',
                     }}>
                         {mangaList}
                     </div>

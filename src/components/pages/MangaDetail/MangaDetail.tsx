@@ -31,9 +31,10 @@ const style = (theme: Theme) => createStyles({
         width: '90%',
     },
     mangaStatusDetail: {
-        width: '90%',
+        maxWidth: '90%',
+        minWidth: '90%',
         display: 'flex',
-        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     mangaCredits: {
         width: '90%',
@@ -109,10 +110,10 @@ class MangaDetail extends Component<Props, State> {
 
     async fetchData() {
 
-        console.log(this.state.loading);
+
 
         const id = this.props.match.params.id;
-        console.log(this.state.loading);
+
 
         const manga = await getManga(id);
         const characters = await getMangaCharacters(id);
@@ -123,7 +124,7 @@ class MangaDetail extends Component<Props, State> {
         const reviews = await getMangaReviews(id);
         const recommendations = await getMangaRecommendations(id);
 
-        console.log(this.state.loading);
+
 
         this.setState({
             loading: false,
@@ -138,7 +139,7 @@ class MangaDetail extends Component<Props, State> {
             tabValue: 0,
         });
 
-        console.log(this.state.loading);
+
 
         this.available();
     }
@@ -215,16 +216,19 @@ class MangaDetail extends Component<Props, State> {
         return (
             <div style={{
                 display: 'flex',
-                flexDirection: 'row',
-                width: '90%',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
             }}>
 
                 <Tabs
-                    orientation="vertical"
+                    scrollButtons="on"
+                    centered={false}
                     variant="scrollable"
                     value={this.state.tabValue}
                     onChange={this.handleTabChange}
-                    style={{ overflow: "visible", marginLeft: '5%' }}
+                    style={{ overflow: "visible", maxWidth: '100%' }}
                 >
                     <Tab label="Overview" {...this.allyProps(0)} />
                     {this.state.charactersAvailable ? <Tab label="Characters" {...this.allyProps(1)} /> : <Tab label="Characters" {...this.allyProps(1)} disabled />}
@@ -246,6 +250,7 @@ class MangaDetail extends Component<Props, State> {
                             <AnimeDetailHeader romajiTitle={manga.title} englishTitle={manga.title_english}
                                 japaneseTitle={manga.title_japanese} genres={manga.genres} imageUrl={manga.image_url} />
                         </div>
+
                         <div className={this.props.classes.mangaDetailsContent}>
                             <div className={this.props.classes.mangaStatusDetail}>
                                 <AnimeStatus title="Type:" content={manga.type} />

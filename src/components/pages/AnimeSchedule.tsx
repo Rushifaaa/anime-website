@@ -23,19 +23,19 @@ const style = (theme: Theme) => createStyles({
     },
     animeItemContainer: {
         display: 'flex',
-        maxWidth:'90%',
+        maxWidth: '90%',
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    
+
     hrSeperator: {
         width: '100%',
         height: '5px',
         backgroundColor: 'white',
         borderColor: 'transparent'
     }
-    
+
 });
 
 export interface AnimeDetails {
@@ -85,10 +85,10 @@ interface State {
 
 
 class Anime extends Component<Props, State> {
-    
+
     constructor(props: Props) {
         super(props);
-        
+
         this.getAnimes();
 
         this.state = {
@@ -106,17 +106,17 @@ class Anime extends Component<Props, State> {
         }
 
         this.handleChange = this.handleChange.bind(this);
-       // this.getAnimes = this.getAnimes.bind(this);
+        // this.getAnimes = this.getAnimes.bind(this);
     }
 
     handleChange = (e: { target: { value: any; }; }) => {
         const text = e.target.value;
-        this.setState({inputValue: text});
+        this.setState({ inputValue: text });
     }
 
     getAnimes = async () => {
         const response = await fetch(
-            'https://api.jikan.moe/v3/schedule/',
+            'http://localhost:8080/v3/schedule/',
             {
                 headers: {
                     Accept: 'application/json',
@@ -159,35 +159,35 @@ class Anime extends Component<Props, State> {
 
 
     render() {
-        return(
+        return (
             <div className={this.props.classes.mainDiv}>
-                    <h1 className={this.props.classes.dayTitles}>Monday</h1>
-                    {this.setAnimes(this.state.monday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Tuesday</h1>
-                    {this.setAnimes(this.state.tuesday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Wednesday</h1>
-                    {this.setAnimes(this.state.wednesday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Thursday</h1>
-                    {this.setAnimes(this.state.thursday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Friday</h1>
-                    {this.setAnimes(this.state.friday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Saturday</h1>
-                    {this.setAnimes(this.state.saturday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Sunday</h1>
-                    {this.setAnimes(this.state.sunday)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Unknown</h1>
-                    {this.setAnimes(this.state.unknown)}
-                    <hr className={this.props.classes.hrSeperator} />
-                    <h1 className={this.props.classes.dayTitles}>Other</h1>
-                    {this.setAnimes(this.state.other)}
-                    <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Monday</h1>
+                {this.setAnimes(this.state.monday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Tuesday</h1>
+                {this.setAnimes(this.state.tuesday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Wednesday</h1>
+                {this.setAnimes(this.state.wednesday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Thursday</h1>
+                {this.setAnimes(this.state.thursday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Friday</h1>
+                {this.setAnimes(this.state.friday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Saturday</h1>
+                {this.setAnimes(this.state.saturday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Sunday</h1>
+                {this.setAnimes(this.state.sunday)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Unknown</h1>
+                {this.setAnimes(this.state.unknown)}
+                <hr className={this.props.classes.hrSeperator} />
+                <h1 className={this.props.classes.dayTitles}>Other</h1>
+                {this.setAnimes(this.state.other)}
+                <hr className={this.props.classes.hrSeperator} />
             </div>
         );
     }

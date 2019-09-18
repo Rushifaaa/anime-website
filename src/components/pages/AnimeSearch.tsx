@@ -94,7 +94,7 @@ class AnimeSearch extends Component<Props, State> {
         const params = this.state.selectValue.join("");
         const url = this.state.url + this.state.inputValue + params;
 
-        console.log("Fecthing animes with", url);
+
         this.setState({ loading: true })
         const response = await fetch(
             url,
@@ -109,7 +109,7 @@ class AnimeSearch extends Component<Props, State> {
 
         this.setState({ animes, loading: false })
 
-        console.log("## animes", this.state.animes);
+
     }
 
     handleChangeAction = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +127,7 @@ class AnimeSearch extends Component<Props, State> {
     }, 200);
 
     handleEnterPress = (e: any) => {
-        console.log(e.key);
+
         if (e.key === "Enter") {
             this.search();
         }

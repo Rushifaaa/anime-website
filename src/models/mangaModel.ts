@@ -2,7 +2,7 @@ import { fetchDetails } from "./generalModel";
 
 export const getManga = async (id: number) => {
     const response = await fetch(
-        `https://api.jikan.moe/v3/manga/${id}`,
+        `http://localhost:8080/v3/manga/${id}`,
         {
             headers: {
                 Accept: 'application/json',

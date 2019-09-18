@@ -15,7 +15,7 @@ export const MangaCharacter = (props: {
         }}>
             {props.characters.map((character) => (
                 <div key={character.mal_id} style={{
-                    width: '30%',
+                    width: '20%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -54,11 +54,11 @@ export const MangaPictures = (props: {
 }) => (
         <div style={{
             display: 'flex',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
         }}>
             {props.pictures.map((picture, index) => (
                 <div key={index} >
-                    <img src={picture.small} alt={picture.small} />
+                    <img src={picture.large} alt={picture.large} />
                 </div>
             ))}
         </div>

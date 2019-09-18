@@ -46,9 +46,9 @@ class AnimeSeasons extends Component<Props, State> {
         //Sommerzeit Juny 6 - September 9
         //Herbst September 9 - December 12
         //Winterzeit December 12 - März 3
-        console.log(month);
 
-        console.log("Test1")
+
+
         let season = "";
         if (month > 0 && month <= 3) {
             season = 'winter';
@@ -62,7 +62,7 @@ class AnimeSeasons extends Component<Props, State> {
 
 
         const response = await fetch(
-            'https://api.jikan.moe/v3/season/' + year + "/" + season,
+            'http://localhost:8080/v3/season/' + year + "/" + season,
             {
                 headers: {
                     Accept: 'application/json',
@@ -73,7 +73,7 @@ class AnimeSeasons extends Component<Props, State> {
         const animes = await response.json();
         const anime: AnimeDetails[] = animes["anime"];
         this.setState({ anime: anime })
-        console.log(this.state.anime)
+
     }
 
     render() {

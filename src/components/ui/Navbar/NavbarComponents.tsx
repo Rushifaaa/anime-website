@@ -1,6 +1,5 @@
-import React from 'react';
 import { Icon, IconButton } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 export const CreateIcon = (props: {
     icon: string,
@@ -11,8 +10,8 @@ export const CreateIcon = (props: {
             display: 'flex',
             margin: '5px',
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center'
+            alignItems: 'start',
+            justifyContent: 'start'
         }}>
             <IconButton
                 href={props.path}
